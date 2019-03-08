@@ -205,9 +205,9 @@ They add an (or even more) extra level of complexity, that has to be maintained 
 I saw tags used for contidional execution (run this, when target is an cloud instance).
 The right usage would be a `when` condition based on facts.
 
-Avoid tags as hard as you can. There should be no need to have them.
+Avoid tags as hard as you can. There should be, in general, no need to have them.
 
-## Roles are project and environment agnostic.
+## Roles are project and environment agnostic
 
 A role does not know, where it is executed. It does not know anything about your project.
 Design your roles in a way, that it does not use the environment or project name.
@@ -235,4 +235,45 @@ And without relying onto the environment, you are able to add new environments w
 
 How the role behaves is now configurable for each environment at inventory-level.
 (It's the "Inversion of control"-pattern applied to ansible-roles).
+
+## Keep roles as small as possible
+
+This adds some points to the "Roles are project and environment agnostic" chapter.
+
+Lets take an example again: We want to ensure PHP on our systems.
+We use the same provision scripts for all our environments, e.g. for the development vm and the productive system.
+
+In development, we need xdebug and composer, but on our live system we don't want them to be installed.
+So, you got two solutions now: Add some flags, that handle the installation of xdebug and composer, or create multiple roles.
+
+In this case, I prefer multiple roles. You will look more often inside your playbooks, than inside the inventory configuration (as playbooks will change more often).
+also, if you are interested in, what is installed, you will probably have a look at the playbook and not inside the configuration.
+
+If you use host grouping, you can design your playbook like this:
+
+```
+# inventory-file
+[prod]
+my_prod_host
+
+[dev]
+my_dev_host
+```
+
+```yaml
+# site.yml
+
+- hosts: all
+  roles:
+    - role: php
+      become: true
+
+- host: dev
+  roles:
+    - role: php_dev
+      become: true
+```
+
+With this, all hosts, regardless of the stage environment will get php ensured.
+But only hosts in the `dev` group will also ensure, that the `php_dev` role is executed.
 

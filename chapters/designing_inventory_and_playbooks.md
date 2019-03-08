@@ -16,14 +16,6 @@ Configuration might change on different environments for a app. Like "for develo
 
 While app configs may be different for each app, environment configuration might be the same for each app (in general, with exceptions).
 
-This picture shows, how they come together:
-
-
-
-
-
-![grouping layout](grouping_layout.png)
-
 
 ## Inventory
 
