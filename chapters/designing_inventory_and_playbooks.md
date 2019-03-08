@@ -29,7 +29,7 @@ This picture shows, how they come together:
 
 The inventory containts two parts:
 
-1. The `hosts`-file: A lit of all hosts known by ansible
+1. The `hosts`-file: A list of all hosts known by ansible
 2. The `group_vars` and (if needed) `host_vars`: Configuration values for each group (and, if needed, for each individual host)
 
 For this setup, we will have multiple inventories, grouped by environment (like `test`, `stage`, `prod`).
