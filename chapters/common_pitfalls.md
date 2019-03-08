@@ -1,5 +1,30 @@
 ## Common pitfalls
 
+## Idempotency
+
+Ansible playbooks have to be [idempotent](https://en.wikipedia.org/wiki/Idempotence).
+That means, even if you run the playbook a lot of times on the same node, the result will always be the same, as if you run the playbook only once.
+This is a core dependency and ensures reliability of the plays.
+
+Ansible (and any other provisioning tool) does not install software, add configurations, etc, it *ensures that the node has the described state*.
+This may look just as a different wording, but it makes a difference on how you see provisioning.
+
+**You describe the state, that the node should have after the playbook run.**
+
+It is a good practice to take over this behaviour while naming tasks: Don't name them "install nginx". Name them "ensure nginx is installed" or "nginx is installed".
+
+You have to take care, that all roles are idempotent. In most cases, the modules are already designed in that way.
+But there are some exceptions. For example, when you use the `shell` module to create a file, you have to add a `creates` option to let ansible know when the command should be executed.
+Another directive is the `changed_when` option.
+
+A simple test for idempotency: Execute the playbook twice. On the second run inside the summary of the run should note, that nothing changed:
+
+```
+PLAY RECAP ***************************************************************************
+node_name                           : ok=221    changed=0    unreachable=0    failed=0
+```
+
+
 ### Nested role configuration is not good.
 
 When writing default configuration for your roles, you might come to the idea of writing it in this way:

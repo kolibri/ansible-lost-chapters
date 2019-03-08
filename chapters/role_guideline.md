@@ -33,6 +33,45 @@ For example there are package related roles, that handle single "packages" like 
 Then there are project related roles, that may consume the package related roles.
 (e.g. the role for a symfony application could depend on the php, nginx and mysql role.)
 
+Another type of roles is described in the chapter [Module Roles](./module_roles.md)
+
+Example directory structure
+
+```
+roles
+├── modules
+│   └── aur
+├── project
+│   └── my_application
+└── packages
+    ├── ansible
+    ├── mysql
+    └── php
+```
+
+## You can use a role more than one in a play
+
+Roles are not limited to one usage. You can add them several times to your plays and they will be executed each time.
+This might be useless, but think about a role, that setups one user account on your machine.
+You can use this role multiple times to add multiple accounts by calling the role with different values each time.
+
+This is simmilar to [Module Roles](./module_roles.md) (but will differ in the way you call the roles)
+
+Example for a playbook.
+
+```
+# site.yml
+- hosts: all
+  roles:
+    - role: user_account
+      vars:
+         username: Torben Tester
+         password: not_so_safe
+    - role: user_account
+      vars:
+         username: Tamara Tester
+         password: better_but_still_unsecure
+```
 
 ## Password
 
