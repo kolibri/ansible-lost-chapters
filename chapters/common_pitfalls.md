@@ -185,3 +185,9 @@ You know, restarting nginx/fpm can be dangerous as it might cancel all current u
 
 To get rid of this, you *do not restart* services at task level. The only purpose of the `service` module at task level is to *enable* a service.
 You need to place a handler
+
+
+### Avoid `shell` and `cmd`
+
+The amount of ansible modules is huge. And probably a module for your problem already exist.
+Try to use them and not to fallback to raw ´shell` tasks.
